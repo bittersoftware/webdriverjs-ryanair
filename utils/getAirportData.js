@@ -4,9 +4,9 @@ function getAirportDataByCode(airportCode) {
     // TODO: create lang settings
     let language = "eng";
 
-    if (this.airports[airportCode]) {
-        const countryName = this.airports[airportCode].country[language] || 'Unknown';
-        const airportName = this.airports[airportCode].airport[language] || 'Unknown';
+    if (airports[airportCode]) {
+        const countryName = airports[airportCode].country[language] || 'Unknown';
+        const airportName = airports[airportCode].airport[language] || 'Unknown';
         return { country: countryName, airport: airportName };
     } else {
         throw new Error('Airport code unknown');

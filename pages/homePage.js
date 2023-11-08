@@ -1,12 +1,12 @@
 const { Key } = require('selenium-webdriver');
 var BasePage = require('./basepage');
-const airports = require('../data/airports');
+const getAirportDataByCode = require('../utils/getAirportData');
+const formatDate = require('../utils/formatDate');
 const { By } = require('selenium-webdriver');
 
 class HomePage extends BasePage {
     constructor() {
         super()
-        this.airports = airports;
         this.oneWay = By.xpath("//ry-radio-button[@data-ref='flight-search-trip-type__one-way-trip']");
         this.returnTrip = By.id("ry-radio-button--1");
         this.from = By.xpath("//fsw-input-button[@uniqueid='departure']");
@@ -44,35 +44,21 @@ class HomePage extends BasePage {
 
     async selectAirport(airportCode) {
         await this.waitForElementIsVisible(this.findElementByLocator(this.country_names));
-        let airportData = await this.getAirportDataByCode(airportCode);
-        let countryElement = await this.findCountryElement(airportData.country);
+        let airportData = getAirportDataByCode(airportCode);
+        let countryElement = await this.#findCountryElement(airportData.country);
 
         if (countryElement) {
             await countryElement.click();
         }
         else {
             throw new Error("Country not found");
-
         }
 
         this.airport_name = By.css(`span[data-id='${airportCode}']`);
         await this.clickByLocator(this.airport_name);
     }
 
-    async getAirportDataByCode(airportCode) {
-        // TODO: create lang settings
-        let language = "eng";
-
-        if (this.airports[airportCode]) {
-            const countryName = this.airports[airportCode].country[language] || 'Unknown';
-            const airportName = this.airports[airportCode].airport[language] || 'Unknown';
-            return { country: countryName, airport: airportName };
-        } else {
-            throw new Error('Airport code unknown');
-        }
-    }
-
-    async findCountryElement(country) {
+    async #findCountryElement(country) {
         let countries = await this.findElementsByLocator(this.country_names);
 
         for (let i = 0; i < countries.length; i++) {
@@ -88,18 +74,11 @@ class HomePage extends BasePage {
     }
 
     async selectDate(date) {
-        let formattedDate = this.formatDate(date);
+        // TODO: while logic to press right up to the test date
+        let formattedDate = formatDate(date);
         this.date = By.css(`div[data-id='${formattedDate}'`);
         await this.waitForElementIsVisible(this.findElementByLocator(this.date));
         await this.clickByLocator(this.date);
-    }
-
-    formatDate(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 to month because it's zero-based
-        const day = String(date.getDate()).padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
     }
 }
 
