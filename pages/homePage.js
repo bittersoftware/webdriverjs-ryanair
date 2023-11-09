@@ -61,8 +61,6 @@ class HomePage extends BasePage {
   }
 
   async selectDestination(airportCode) {
-    // await this.clickByLocator(this.to);
-    // destination calendar is opened automatically after selecting Departure
     await this.selectAirport(airportCode);
   }
 
@@ -110,51 +108,48 @@ class HomePage extends BasePage {
   }
 
   async selectNumberOfAdults(passengersNumber) {
-    await this.waitForElementIsLocated(this.currentAdultPassengers);
-
-    const currentAdultPassengersElement = await this.findElementByLocator(
-      this.currentAdultPassengers
+    await this.selectNumberOfPax(
+      passengersNumber,
+      this.currentAdultPassengers,
+      this.incrementAdultPassenger,
+      this.decrementAdultPassenger
     );
-
-    const currentPassengers = await currentAdultPassengersElement.getText();
-
-    const difference = passengersNumber - Number(currentPassengers);
-
-    if (difference === 0) {
-    }
-    if (difference > 0) {
-      await this.waitForElementIsLocated(this.incrementAdultPassenger);
-      for (let i = 0; i < difference; i += 1) {
-        await this.clickByLocator(this.incrementAdultPassenger);
-      }
-    } else if (difference < 0) {
-      for (let i = 0; i < Math.abs(difference); i += 1) {
-        await this.clickByLocator(this.decrementAdultPassenger);
-      }
-    }
   }
 
   async selectNumberOfChildren(passengersNumber) {
-    await this.waitForElementIsLocated(this.currentChildrenPassengers);
+    await this.selectNumberOfPax(
+      passengersNumber,
+      this.currentChildrenPassengers,
+      this.incrementChildrenPassenger,
+      this.decrementChildrenPassenger
+    );
+  }
 
-    const currentPassengersElement = await this.findElementByLocator(
-      this.currentChildrenPassengers
+  async selectNumberOfPax(
+    paxNumber,
+    currentPaxLocator,
+    incrementLocator,
+    decrementLocator
+  ) {
+    await this.waitForElementIsLocated(currentPaxLocator);
+
+    const currentPaxElement = await this.findElementByLocator(
+      currentPaxLocator
     );
 
-    const currentPassengers = await currentPassengersElement.getText();
+    const currentPaxCount = await currentPaxElement.getText();
 
-    const difference = passengersNumber - Number(currentPassengers);
+    const difference = paxNumber - Number(currentPaxCount);
 
-    if (difference === 0) {
-    }
     if (difference > 0) {
-      await this.waitForElementIsLocated(this.incrementChildrenPassenger);
+      await this.waitForElementIsLocated(incrementLocator);
       for (let i = 0; i < difference; i += 1) {
-        await this.clickByLocator(this.incrementChildrenPassenger);
+        await this.clickByLocator(incrementLocator);
       }
     } else if (difference < 0) {
+      await this.waitForElementIsLocated(decrementLocator);
       for (let i = 0; i < Math.abs(difference); i += 1) {
-        await this.clickByLocator(this.decrementChildrenPassenger);
+        await this.clickByLocator(decrementLocator);
       }
     }
   }
