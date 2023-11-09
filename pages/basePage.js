@@ -1,41 +1,72 @@
-var webdriver = require('selenium-webdriver');
-const { By } = require('selenium-webdriver');
-var driver = new webdriver.Builder().forBrowser('chrome').build();
-driver.manage().setTimeouts({ implicit: (10000) });
+const webdriver = require("selenium-webdriver");
+const until = require("selenium-webdriver");
+
+const driver = new webdriver.Builder().forBrowser("chrome").build();
+driver.manage().setTimeouts({ implicit: 20000 });
 driver.manage().window().maximize();
 
 class BasePage {
-    constructor() {
-        global.driver = driver;
-    }
+  constructor() {
+    global.driver = driver;
+    this.driver = driver;
+  }
 
-    async goToUrl(theURL) {
-        await driver.get(theURL);
-    }
+  async goToUrl(theURL) {
+    await this.driver.get(theURL);
+  }
 
-    findElementByLocator(locator) {
-        return driver.findElement(locator);
-    }
+  async findElementByLocator(locator) {
+    return this.driver.findElement(locator);
+  }
 
-    async findElementsByLocator(locator) {
-        return await driver.findElements(locator);
-    }
+  async findElementsByLocator(locator) {
+    return this.driver.findElements(locator);
+  }
 
-    async clickByLocator(locator) {
-        await driver.findElement(locator).click();
-    }
+  async clickByLocator(locator) {
+    await this.driver.findElement(locator).click();
+  }
 
-    async waitForElementIsVisible(element) {
-        await driver.wait(webdriver.until.elementIsVisible(element), 2000);
-    }
+  async retryClickByLocator(locator) {
+    await this.driver.findElement(locator).click();
+  }
 
-    async waitForElementIsNotVisible(element) {
-        await driver.wait(webdriver.until.stalenessOf(element), 5000);
-    }
+  async waitForElementIsLocated(locator) {
+    await this.driver.wait(webdriver.until.elementLocated(locator), 10000);
+  }
 
-    async closeBrowser() {
-        await driver.quit();
+  async waitForElementIsVisible(element) {
+    await this.driver.wait(webdriver.until.elementIsVisible(element), 5000);
+  }
+
+  async waitForElementIsEnabled(element) {
+    await this.driver.wait(webdriver.until.elementIsEnabled(element), 5000);
+  }
+
+  async waitForElementIsStaleness(element) {
+    await this.driver.wait(webdriver.until.stalenessOf(element), 5000);
+  }
+
+  async waitForElementIsNotVisible(element) {
+    await this.driver.wait(webdriver.until.elementIsNotVisible(element), 5000);
+  }
+
+  async clickElementWithWait(locator) {
+    for (let j = 0; j < 5; j += 1) {
+      try {
+        const dateElement = await this.findElementByLocator(locator);
+        await dateElement.click();
+        return;
+      } catch (StaleElementReferenceError) {
+        console.error("element not found");
+      }
     }
+    throw new Error(`Element not found for ${locator}`);
+  }
+
+  async closeBrowser() {
+    await this.driver.quit();
+  }
 }
 
 module.exports = BasePage;
