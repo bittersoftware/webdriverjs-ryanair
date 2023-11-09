@@ -58,7 +58,7 @@ class BasePage {
         await dateElement.click();
         return;
       } catch (StaleElementReferenceError) {
-        console.error("element not found");
+        console.error(`Element not found: ${locator}`);
       }
     }
     throw new Error(`Element not found for ${locator}`);
