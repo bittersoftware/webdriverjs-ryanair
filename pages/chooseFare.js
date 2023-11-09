@@ -4,13 +4,23 @@ const BasePage = require("./basePage");
 class ChooseFare extends BasePage {
   constructor() {
     super();
-    this.bla = By.xpath("//td[@data-ref='benefit-bags']/following-sibling::td");
+    this.checkIn20KgLuggage = By.xpath(
+      "//td[@data-ref='benefit-bags']/following-sibling::td"
+    );
     this.fares = By.css("th.fare-table__fare-column");
   }
 
-  async selectCheckInBagFareByIndex(index) {
-    const faresElements = await this.findElementsByLocator(this.bla);
+  async selectCheckInBagFareByIndex(weight, index) {
+    // Luggage type:
+    let luggageLocator;
 
+    if (weight === 20) {
+      luggageLocator = this.checkIn20KgLuggage;
+    } else {
+      throw new Error(`Implement locator for luggage type: ${weight}`);
+    }
+
+    const faresElements = await this.findElementsByLocator(luggageLocator);
     const faresIndexWithCheckInBag = [];
 
     for (let i = 0; i < faresElements.length; i += 1) {

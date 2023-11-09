@@ -38,7 +38,7 @@ When(
   "I proceed to pay with selected seats and {int}kg bags added",
   async (weight) => {
     await SelectFlights.selectFlightByIndex(0);
-    await ChooseFare.selectCheckInBagFareByIndex(0);
+    await ChooseFare.selectCheckInBagFareByIndex(weight, 0);
   }
 );
 
