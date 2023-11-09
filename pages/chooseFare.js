@@ -30,7 +30,7 @@ class ChooseFare extends BasePage {
     }
 
     const faresColumns = await this.findElementsByLocator(this.fares);
-    faresColumns[faresIndexWithCheckInBag[index]].click();
+    await faresColumns[faresIndexWithCheckInBag[index]].click();
   }
 }
 

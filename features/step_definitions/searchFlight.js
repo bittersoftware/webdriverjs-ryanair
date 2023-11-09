@@ -1,9 +1,10 @@
 const { defineParameterType } = require("cucumber");
 const { Given, When, Then, AfterAll, setDefaultTimeout } = require("cucumber");
-const cookiesPage = require("../../pages/cookiesPage");
+const cookiesPage = require("../../pages/cookiesPopUp");
 const HomePage = require("../../pages/homePage");
 const SelectFlights = require("../../pages/selectFlights");
 const ChooseFare = require("../../pages/chooseFare");
+const PassengerDetails = require("../../pages/passengerDetails");
 
 setDefaultTimeout(60 * 1000);
 
@@ -39,6 +40,9 @@ When(
   async (weight) => {
     await SelectFlights.selectFlightByIndex(0);
     await ChooseFare.selectCheckInBagFareByIndex(weight, 0);
+    await PassengerDetails.selectLoginLater();
+    await PassengerDetails.fillPassengerDetails();
+    await PassengerDetails.selectContinue();
   }
 );
 
