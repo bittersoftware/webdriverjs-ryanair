@@ -2,6 +2,8 @@ const { defineParameterType } = require("cucumber");
 const { Given, When, Then, AfterAll, setDefaultTimeout } = require("cucumber");
 const cookiesPage = require("../../pages/cookiesPage");
 const HomePage = require("../../pages/homePage");
+const SelectFlights = require("../../pages/selectFlights");
+const ChooseFare = require("../../pages/chooseFare");
 
 setDefaultTimeout(60 * 1000);
 
@@ -35,8 +37,8 @@ Given(
 When(
   "I proceed to pay with selected seats and {int}kg bags added",
   async (weight) => {
-    console.log("Select seats");
-    console.log(weight);
+    await SelectFlights.selectFlightByIndex(0);
+    await ChooseFare.selectCheckInBagFareByIndex(0);
   }
 );
 

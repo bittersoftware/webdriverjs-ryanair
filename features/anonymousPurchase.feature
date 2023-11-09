@@ -5,6 +5,6 @@ Feature: Search Flight
         Given I open Ryanair webpage
 
     Scenario: AnonymousSearch
-        Given I search for a flight from "TIA" to "STN" on 12/01/2023 for 2 adults and 1 child
+        Given I search for a flight from "DUB" to "STN" on 12/01/2023 for 2 adults and 1 child
         When I proceed to pay with selected seats and 20kg bags added
         Then login popup shows up

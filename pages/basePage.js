@@ -2,7 +2,7 @@ const webdriver = require("selenium-webdriver");
 const until = require("selenium-webdriver");
 
 const driver = new webdriver.Builder().forBrowser("chrome").build();
-driver.manage().setTimeouts({ implicit: 20000 });
+driver.manage().setTimeouts({ implicit: 5000 });
 driver.manage().window().maximize();
 
 class BasePage {
@@ -62,6 +62,12 @@ class BasePage {
       }
     }
     throw new Error(`Element not found for ${locator}`);
+  }
+
+  async scrollToElement(element) {
+    // TODO: review this solution
+    this.driver.executeScript("arguments[0].scrollIntoView(true);", element);
+    await new Promise((r) => setTimeout(r, 1000));
   }
 
   async closeBrowser() {
