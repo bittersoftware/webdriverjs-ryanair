@@ -4,40 +4,23 @@ const BasePage = require("./basePage");
 class ChooseFare extends BasePage {
   constructor() {
     super();
-    // this.checkInBagFares = By.css("td[data-ref='benefit-bags'] icon[iconid='glyphs/tick']");
-    this.checkInBagFares = By.css("td[data-ref='benefit-bags']");
-    this.fares = By.css("tr.fare-table__benefit-row");
-    this.checkIcon = By.css("icon.fare-table__benefit-icon");
+    this.bla = By.xpath("//td[@data-ref='benefit-bags']/following-sibling::td");
+    this.fares = By.css("th.fare-table__fare-column");
   }
 
   async selectCheckInBagFareByIndex(index) {
-    const faresElements = await this.findElementsByLocator(this.fares);
-    let checkInFaresElements;
+    const faresElements = await this.findElementsByLocator(this.bla);
+
+    const faresIndexWithCheckInBag = [];
 
     for (let i = 0; i < faresElements.length; i += 1) {
-      try {
-        const checkInBagElement = await faresElements[i].findElement(
-          this.checkInBagFares
-        );
-
-        if (checkInBagElement) {
-          checkInFaresElements = await faresElements[i].findElements(
-            this.checkIcon
-          );
-          break;
-        }
-      } catch (NoSuchElementError) {
-        console.error("bla");
+      if ((await faresElements[i].getAttribute("aria-label")) === "Included") {
+        faresIndexWithCheckInBag.push(i);
       }
     }
 
-    if (checkInFaresElements) {
-      const checkInBagFareElement = checkInFaresElements[index];
-      await this.scrollToElement(checkInBagFareElement);
-      await checkInBagFareElement.click();
-    } else {
-      throw new Error("Fare not found");
-    }
+    const faresColumns = await this.findElementsByLocator(this.fares);
+    faresColumns[faresIndexWithCheckInBag[index]].click();
   }
 }
 
