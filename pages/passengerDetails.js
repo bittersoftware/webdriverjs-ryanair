@@ -61,6 +61,8 @@ class PassengerDetails extends BasePage {
     let paxLastNameLoc;
     let paxTitleLoc;
 
+    this.scrollToBottom();
+
     for (let i = 0; i < paxCardEls.length; i += 1) {
       this.driver.actions().move(paxCardEls[i]);
 
@@ -88,11 +90,12 @@ class PassengerDetails extends BasePage {
   }
 
   async selectContinue() {
+    await this.driver.sleep(2000);
     const continueButtonEl = await this.findElementByLocator(
       this.continueButtonLoc
     );
-    this.driver.actions().move(continueButtonEl);
-    this.clickElementWithWait(this.continueButtonLoc);
+    await this.scrollToElement(continueButtonEl);
+    await this.clickByLocator(this.continueButtonLoc);
   }
 }
 

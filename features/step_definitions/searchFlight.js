@@ -5,6 +5,7 @@ const HomePage = require("../../pages/homePage");
 const SelectFlights = require("../../pages/selectFlights");
 const ChooseFare = require("../../pages/chooseFare");
 const PassengerDetails = require("../../pages/passengerDetails");
+const SelectSeatsPage = require("../../pages/selectSeats");
 
 setDefaultTimeout(60 * 1000);
 
@@ -43,6 +44,8 @@ When(
     await PassengerDetails.selectLoginLater();
     await PassengerDetails.fillPassengerDetails();
     await PassengerDetails.selectContinue();
+    await SelectSeatsPage.dismissFamilyWarningPopUp();
+    await SelectSeatsPage.clickContinueButton();
   }
 );
 

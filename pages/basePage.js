@@ -69,6 +69,11 @@ class BasePage {
     await new Promise((r) => setTimeout(r, 1000));
   }
 
+  async scrollToBottom() {
+    this.driver.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    await new Promise((r) => setTimeout(r, 1000));
+  }
+
   async closeBrowser() {
     await this.driver.quit();
   }
