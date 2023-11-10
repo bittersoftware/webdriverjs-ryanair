@@ -40,7 +40,7 @@ class BagsSelectionPage extends BasePage {
 
   async selectContinue() {
     await this.scrollToBottom();
-    await this.clickByLocator(this.continueButtonLoc);
+    await this.clickElementWithWait(this.continueButtonLoc);
   }
 }
 

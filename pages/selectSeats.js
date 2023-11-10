@@ -35,13 +35,16 @@ class SelectSeatsPage extends BasePage {
   async dismissFamilyWarningPopUp() {
     await this.#updateFamilyRows();
     await this.clickElementWithWait(this.seatPopUpButtonLoc);
+    // wait for airplane seats animation before proceed
+    // avoids intermittent ElementClickInterceptedError when selecting seats
+    await this.driver.sleep(2000);
   }
 
   async clickContinueButton() {
     await this.clickElementWithWait(this.continueButtonLoc);
   }
 
-  async findFirstAvailableSeats() {
+  async findFirstAvailableSeats(paxNumber) {
     const firstFamilyRowLoc = By.xpath(
       this.rowLengthLoc.value.replace("ROW", this.familyRows[0])
     );
@@ -57,16 +60,16 @@ class SelectSeatsPage extends BasePage {
       leftSeats = seatsIdPerRow[0].split("");
       rightSeats = seatsIdPerRow[1].split("");
 
-      if (await this.findConsecutiveFreeSeatsInRow(row, 3, leftSeats)) {
-        console.log(`found in left side row ${row}`);
+      if (await this.findConsecutiveFreeSeatsInRow(row, paxNumber, leftSeats)) {
         for (let seat = 0; seat < leftSeats.length; seat++) {
           await this.selectSeat(row, leftSeats[seat]);
         }
         break;
       }
 
-      if (await this.findConsecutiveFreeSeatsInRow(row, 3, rightSeats)) {
-        console.log(`found in right side row ${row}`);
+      if (
+        await this.findConsecutiveFreeSeatsInRow(row, paxNumber, rightSeats)
+      ) {
         for (let seat = 0; seat < rightSeats.length; seat++) {
           await this.selectSeat(row, rightSeats[seat]);
         }

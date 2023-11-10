@@ -50,7 +50,7 @@ When(
     await PassengerDetails.fillPassengerDetails();
     await PassengerDetails.selectContinue();
     await SelectSeatsPage.dismissFamilyWarningPopUp();
-    await SelectSeatsPage.findFirstAvailableSeats();
+    await SelectSeatsPage.findFirstAvailableSeats(3);
     await SelectSeatsPage.clickContinueButton();
     await FastTrackPage.selectNoThanks();
     await BagsSelectionPage.selectSmallBag();
@@ -63,7 +63,7 @@ When(
 
 Then("login popup shows up", async () => {
   const signInDialogEl = await SignInDialogPage.getSignInDialogEl();
-  assert.typeof(signInDialogEl, "WebElement");
+  assert.exists(signInDialogEl, "Sign In Dialog WebElement not Found");
 });
 
 AfterAll(async () => {
