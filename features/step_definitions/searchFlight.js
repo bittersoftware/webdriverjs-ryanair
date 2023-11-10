@@ -1,5 +1,8 @@
-const { defineParameterType } = require("cucumber");
-const { Given, When, Then, AfterAll, setDefaultTimeout } = require("cucumber");
+const {
+  defineParameterType,
+  setDefaultTimeout,
+} = require("@cucumber/cucumber");
+const { Given, When, Then, AfterAll } = require("@cucumber/cucumber");
 const { assert } = require("chai");
 const cookiesPage = require("../../pages/cookiesPopUp");
 const HomePage = require("../../pages/homePage");
