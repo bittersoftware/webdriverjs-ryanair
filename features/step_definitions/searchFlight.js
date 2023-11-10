@@ -1,11 +1,16 @@
 const { defineParameterType } = require("cucumber");
 const { Given, When, Then, AfterAll, setDefaultTimeout } = require("cucumber");
+const { assert } = require("chai");
 const cookiesPage = require("../../pages/cookiesPopUp");
 const HomePage = require("../../pages/homePage");
 const SelectFlights = require("../../pages/selectFlights");
 const ChooseFare = require("../../pages/chooseFare");
 const PassengerDetails = require("../../pages/passengerDetails");
 const SelectSeatsPage = require("../../pages/selectSeats");
+const FastTrackPage = require("../../pages/fastTrackPopUp");
+const BagsSelectionPage = require("../../pages/bagsSelection");
+const ExtrasPage = require("../../pages/extrasOptions");
+const SignInDialogPage = require("../../pages/signInDialog");
 
 setDefaultTimeout(60 * 1000);
 
@@ -45,12 +50,20 @@ When(
     await PassengerDetails.fillPassengerDetails();
     await PassengerDetails.selectContinue();
     await SelectSeatsPage.dismissFamilyWarningPopUp();
+    await SelectSeatsPage.findFirstAvailableSeats();
     await SelectSeatsPage.clickContinueButton();
+    await FastTrackPage.selectNoThanks();
+    await BagsSelectionPage.selectSmallBag();
+    await BagsSelectionPage.selectCheckInBagsForAll(weight);
+    await BagsSelectionPage.selectContinue();
+    await ExtrasPage.selectContinueForAirportAndTrip();
+    await ExtrasPage.selectContinueForTransport();
   }
 );
 
 Then("login popup shows up", async () => {
-  console.log("login");
+  const signInDialogEl = await SignInDialogPage.getSignInDialogEl();
+  assert.typeof(signInDialogEl, "WebElement");
 });
 
 AfterAll(async () => {

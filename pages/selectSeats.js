@@ -6,7 +6,7 @@ class SelectSeatsPage extends BasePage {
     super();
     this.seatPopUpButtonLoc = By.css("button.seats-modal__cta");
     this.seatPopUpTextLoc = By.css("div.seats-modal__body");
-    this.seatLoc = By.id("seat-XXL");
+    this.seatLoc = By.css("*[id='seat-XXL']");
     this.rowLengthLoc = By.xpath("//*[contains(@id,'seat-ROW')]");
     this.continueButtonLoc = By.css(
       "button[data-ref='seats-action__button-continue']"
@@ -38,8 +38,7 @@ class SelectSeatsPage extends BasePage {
   }
 
   async clickContinueButton() {
-    await this.waitForElementIsLocated(this.continueButtonLoc);
-    await this.clickByLocator(this.continueButtonLoc);
+    await this.clickElementWithWait(this.continueButtonLoc);
   }
 
   async findFirstAvailableSeats() {
@@ -50,27 +49,38 @@ class SelectSeatsPage extends BasePage {
     const seatsPerRow = (await this.findElementsByLocator(firstFamilyRowLoc))
       .length;
     const seatsIdPerRow = SelectSeatsPage.#getSeatsConfig(seatsPerRow);
-    console.error(firstFamilyRowLoc);
-    console.error(`SEATS LENGTH: ${seatsPerRow}`);
-    console.error(`SEATS: ${seatsIdPerRow}`);
 
     let leftSeats;
     let rightSeats;
 
-    for (let i = this.familyRows[0]; i <= this.familyRows[1]; i++) {
+    for (let row = this.familyRows[0]; row <= this.familyRows[1]; row++) {
       leftSeats = seatsIdPerRow[0].split("");
       rightSeats = seatsIdPerRow[1].split("");
 
-      if (await this.findConsecutiveFreeSeatsInRow(i, 3, leftSeats)) {
-        console.log(`found in left side row ${i}`);
+      if (await this.findConsecutiveFreeSeatsInRow(row, 3, leftSeats)) {
+        console.log(`found in left side row ${row}`);
+        for (let seat = 0; seat < leftSeats.length; seat++) {
+          await this.selectSeat(row, leftSeats[seat]);
+        }
         break;
       }
 
-      if (await this.findConsecutiveFreeSeatsInRow(i, 3, rightSeats)) {
-        console.log(`found in left side row ${i}`);
+      if (await this.findConsecutiveFreeSeatsInRow(row, 3, rightSeats)) {
+        console.log(`found in right side row ${row}`);
+        for (let seat = 0; seat < rightSeats.length; seat++) {
+          await this.selectSeat(row, rightSeats[seat]);
+        }
         break;
       }
     }
+  }
+
+  async selectSeat(row, seat) {
+    const seatLoc = By.css(
+      this.seatLoc.value.replace("XX", row).replace("L", seat)
+    );
+
+    await this.clickByLocator(seatLoc);
   }
 
   async findConsecutiveFreeSeatsInRow(row, freeSeats, seatsIds) {
@@ -79,14 +89,10 @@ class SelectSeatsPage extends BasePage {
     let seatEl;
 
     for (let seat = 0; seat < seatsIds.length; seat++) {
-      seatLoc = By.id(
+      seatLoc = By.css(
         this.seatLoc.value.replace("XX", row).replace("L", seatsIds[seat])
       );
-      console.log(`find seat: ${seatLoc}`);
       seatEl = await this.findElementByLocator(seatLoc);
-      console.log(
-        (await seatEl.getAttribute("class")).includes(this.unavailableSeatClass)
-      );
 
       if (
         (await seatEl.getAttribute("class")).includes(this.unavailableSeatClass)
