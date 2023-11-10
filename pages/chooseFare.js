@@ -4,37 +4,42 @@ const BasePage = require("./basePage");
 class ChooseFare extends BasePage {
   constructor() {
     super();
-    this.checkIn20KgLuggage = By.xpath(
-      "//td[@data-ref='benefit-bags']/following-sibling::td"
+    this.fareColsLoc = By.css("th.fare-table__fare-column");
+    this.fareNamesLoc = By.css("span.fare-header__name");
+    this.continueButtonLoc = By.xpath(
+      "//ry-spinner[contains(text(), 'Continue')]"
     );
-    this.fares = By.css("th.fare-table__fare-column");
+    this.switchToRegularButtonLoc = By.xpath(
+      "//ry-spinner[contains(text(), 'Switch')]"
+    );
   }
 
-  async selectCheckInBagFareByIndex(weight, index) {
-    // Luggage type:
-    let luggageLocator;
+  async selectCheckInBagFareByIndex(fareName) {
+    const fareNames = await this.findElementsByLocator(this.fareNamesLoc);
+    const faresColumns = await this.findElementsByLocator(this.fareColsLoc);
 
-    if (weight === 20) {
-      luggageLocator = this.checkIn20KgLuggage;
-    } else {
-      throw new Error(`Implement locator for luggage type: ${weight}`);
-    }
-
-    let faresElements = await this.findElementsByLocator(luggageLocator);
-    await this.scrollToElement(faresElements[0]);
-    // await this.waitForElementIsStaleness(faresElements[0]);
-    const faresIndexWithCheckInBag = [];
-
-    for (let i = 0; i < faresElements.length; i += 1) {
-      faresElements = await this.findElementsByLocator(luggageLocator);
-      if ((await faresElements[i].getAttribute("aria-label")) === "Included") {
-        faresIndexWithCheckInBag.push(i);
+    for (let i = 0; i < fareNames.length; i++) {
+      if ((await fareNames[i].getText()) === fareName) {
+        await faresColumns[i].click();
+        return;
       }
     }
 
-    const faresColumns = await this.findElementsByLocator(this.fares);
-    await this.scrollToElement(faresColumns[0]);
-    await faresColumns[faresIndexWithCheckInBag[index]].click();
+    throw new Error(`Fare not found ${fareName}`);
+  }
+
+  async selectContinueWithBasic() {
+    const buttonContinueWithBasicEl = await this.findElementByLocator(
+      this.continueSwitchButtonsLoc
+    );
+    await buttonContinueWithBasicEl.click();
+  }
+
+  async selectSwitchToRegular() {
+    const buttonSwitchToRegularEl = await this.findElementByLocator(
+      this.switchToRegularButtonLoc
+    );
+    await buttonSwitchToRegularEl.click();
   }
 }
 

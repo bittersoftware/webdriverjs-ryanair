@@ -48,7 +48,8 @@ When(
   "I proceed to pay with selected seats and {int}kg bags added",
   async (weight) => {
     await SelectFlights.selectFlightByIndex(0);
-    await ChooseFare.selectCheckInBagFareByIndex(weight, 0);
+    await ChooseFare.selectCheckInBagFareByIndex("BASIC");
+    await ChooseFare.selectSwitchToRegular();
     await PassengerDetails.selectLoginLater();
     await PassengerDetails.fillPassengerDetails();
     await PassengerDetails.selectContinue();
@@ -70,5 +71,5 @@ Then("login popup shows up", async () => {
 });
 
 AfterAll(async () => {
-  // await driver.quit();
+  await driver.quit();
 });
