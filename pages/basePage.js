@@ -1,7 +1,7 @@
 const webdriver = require("selenium-webdriver");
 
 const driver = new webdriver.Builder().forBrowser("chrome").build();
-driver.manage().setTimeouts({ implicit: 5000 });
+driver.manage().setTimeouts({ implicit: 10000 });
 driver.manage().window().maximize();
 
 class BasePage {
@@ -35,19 +35,19 @@ class BasePage {
   }
 
   async waitForElementIsVisible(element) {
-    await this.driver.wait(webdriver.until.elementIsVisible(element), 5000);
+    await this.driver.wait(webdriver.until.elementIsVisible(element), 10000);
   }
 
   async waitForElementIsEnabled(element) {
-    await this.driver.wait(webdriver.until.elementIsEnabled(element), 5000);
+    await this.driver.wait(webdriver.until.elementIsEnabled(element), 10000);
   }
 
   async waitForElementIsStaleness(element) {
-    await this.driver.wait(webdriver.until.stalenessOf(element), 5000);
+    await this.driver.wait(webdriver.until.stalenessOf(element), 10000);
   }
 
   async waitForElementIsNotVisible(element) {
-    await this.driver.wait(webdriver.until.elementIsNotVisible(element), 5000);
+    await this.driver.wait(webdriver.until.elementIsNotVisible(element), 10000);
   }
 
   async clickElementWithWait(locator) {

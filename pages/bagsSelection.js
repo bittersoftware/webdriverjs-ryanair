@@ -1,4 +1,4 @@
-const { By, Key } = require("selenium-webdriver");
+const { By } = require("selenium-webdriver");
 const BasePage = require("./basePage");
 
 class BagsSelectionPage extends BasePage {
@@ -59,21 +59,7 @@ class BagsSelectionPage extends BasePage {
       await this.findElementByLocator(this.continueButtonLoc)
     );
 
-    await console.error(
-      `Continue Btn El: ${continueButtonEl.getAttribute("innerHTML")}`
-    );
-    // await this.clickElementWithWait(this.continueButtonLoc);
-    // await continueButtonEl.click();
-    console.error("Click 3");
     await this.clickByLocator(this.continueButtonLoc);
-    // console.error("Click 4");
-    // console.error("Click 5");
-    // continueButtonEl = await this.findElementByLocator(this.continueButtonLoc);
-    // await continueButtonEl.click();
-    // console.error("Click 6");
-    // await continueButtonEl.sendKeys(Key.RETURN);
-    // await continueButtonEl.sendKeys(Key.ENTER);
-    // console.error("Clicked");
   }
 }
 
