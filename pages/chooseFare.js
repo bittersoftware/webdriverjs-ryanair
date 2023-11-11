@@ -60,7 +60,7 @@ class ChooseFare extends BasePage {
    * @returns {undefined}
    */
   async selectSwitchToRegular() {
-    await this.newWaitUntil(this.elements.switchToRegularButtonLoc);
+    await this.waitForElementIsVisible(this.elements.switchToRegularButtonLoc);
     await this.clickByLocator(this.elements.switchToRegularButtonLoc);
   }
 }

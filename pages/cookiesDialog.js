@@ -16,7 +16,7 @@ class CookiesPage extends BasePage {
    * @returns {undefined}
    */
   async acceptCookies() {
-    await this.newWaitUntil(this.elements.agreeLoc);
+    await this.waitForElementIsVisible(this.elements.agreeLoc);
     await this.clickByLocator(this.elements.agreeLoc);
   }
 
@@ -25,7 +25,7 @@ class CookiesPage extends BasePage {
    * @returns {undefined}
    */
   async selectSettings() {
-    await this.newWaitUntil(this.elements.agreeLoc);
+    await this.waitForElementIsVisible(this.elements.agreeLoc);
     await this.clickByLocator(this.elements.settingsLoc);
   }
 }

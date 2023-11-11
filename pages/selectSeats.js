@@ -18,7 +18,7 @@ class SelectSeatsPage extends BasePage {
 
   async #updateFamilyRows() {
     // this.driver.sleep(5000);
-    await this.newWaitUntil(this.seatPopUpTextLoc);
+    await this.waitForElementIsVisible(this.seatPopUpTextLoc);
     // const popUpEl = await this.findElementByLocator(this.seatPopUpTextLoc);
     // await this.waitForElementIsEnabled(popUpEl);
     // await console.info(`popUp El: ${popUpEl.getAttribute("innerHTML")}`);
@@ -29,21 +29,21 @@ class SelectSeatsPage extends BasePage {
   async dismissFamilyWarningPopUp() {
     // await this.waitForPageToLoad(5);
     await this.#updateFamilyRows();
-    await this.clickElementWithWait(this.seatPopUpButtonLoc);
+    await this.clickByLocator(this.seatPopUpButtonLoc);
     // wait for airplane seats animation before proceed
     // avoids intermittent ElementClickInterceptedError when selecting seats
     // await this.driver.sleep(2000);
   }
 
   async clickContinueButton() {
-    await this.clickElementWithWait(this.continueButtonLoc);
+    await this.clickByLocator(this.continueButtonLoc);
   }
 
   async findFirstAvailableSeats(paxNumber) {
     const firstFamilyRowLoc = By.xpath(
       this.rowLengthLoc.value.replace("ROW", this.familyRows[0])
     );
-    await this.newWaitUntil(firstFamilyRowLoc);
+    await this.waitForElementIsVisible(firstFamilyRowLoc);
     const seatsPerRow = (await this.findElementsByLocator(firstFamilyRowLoc))
       .length;
     const seatsIdPerRow = SelectSeatsPage.#getSeatsConfig(seatsPerRow);

@@ -109,7 +109,7 @@ class HomePage extends BasePage {
     const dateElement = await this.findElementByLocator(this.date);
     await this.waitForElementIsEnabled(dateElement);
     this.driver.actions().move(dateElement);
-    await this.clickElementWithWait(this.date);
+    await this.clickByLocator(this.date);
   }
 
   async selectNumberOfAdults(passengersNumber) {
@@ -160,10 +160,16 @@ class HomePage extends BasePage {
   }
 
   async selectDone() {
+    await this.scrollToElement(
+      await this.findElementByLocator(this.doneButton)
+    );
     await this.clickByLocator(this.doneButton);
   }
 
   async selectSearch() {
+    await this.scrollToElement(
+      await this.findElementByLocator(this.searchButton)
+    );
     await this.clickByLocator(this.searchButton);
   }
 }

@@ -27,7 +27,7 @@ class BagsSelectionPage extends BasePage {
       await this.waitForElementIsLocated(this.elements.smallBagLoc, 3000);
       const smallBagEl = this.findElementByLocator(this.elements.smallBagLoc);
       this.driver.actions().move(smallBagEl);
-      await this.clickElementWithWait(this.elements.smallBagLoc);
+      await this.clickByLocator(this.elements.smallBagLoc);
     } catch (TimeoutError) {
       console.info("bags already included");
     }
@@ -40,7 +40,7 @@ class BagsSelectionPage extends BasePage {
    * @returns {undefined}
    */
   async selectCheckInBagsForAll(weight) {
-    await this.newWaitUntil(this.elements.checkInBagTableLoc);
+    await this.waitForElementIsVisible(this.elements.checkInBagTableLoc);
 
     await this.scrollToElement(
       await this.findElementByLocator(this.elements.checkInBagTableLoc)
@@ -86,7 +86,7 @@ class BagsSelectionPage extends BasePage {
   async selectContinue() {
     await this.scrollToBottom();
     await this.driver.sleep(3000);
-    await this.newWaitUntil(this.elements.continueButtonLoc);
+    await this.waitForElementIsVisible(this.elements.continueButtonLoc);
     await this.clickByLocator(this.elements.continueButtonLoc);
   }
 }

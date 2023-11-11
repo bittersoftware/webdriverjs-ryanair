@@ -9,15 +9,15 @@ class ExtrasPage extends BasePage {
   }
 
   async selectContinueForAirportAndTrip() {
-    await this.scrollToBottom();
+    this.scrollToBottom();
     await this.waitForElementIsLocated(this.continueAirportAndTripLoc);
-    await this.clickByLocator(this.continueAirportAndTripLoc);
+    await this.clickByLocatorWithRetry(this.continueAirportAndTripLoc);
   }
 
   async selectContinueForTransport() {
-    await this.scrollToBottom();
+    this.scrollToBottom();
     await this.waitForElementIsLocated(this.continueTransportLoc);
-    await this.clickByLocator(this.continueTransportLoc);
+    await this.clickByLocatorWithRetry(this.continueTransportLoc);
   }
 }
 
