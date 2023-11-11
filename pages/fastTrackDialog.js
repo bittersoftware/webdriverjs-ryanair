@@ -11,7 +11,7 @@ class FastTrackPage extends BasePage {
 
   async selectNoThanks() {
     await this.clickByLocator(this.noThanksLoc);
-    await this.driver.sleep(5);
+    // await this.driver.sleep(5);
   }
 }
 

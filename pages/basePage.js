@@ -1,4 +1,5 @@
 const webdriver = require("selenium-webdriver");
+const { WebElement } = require("selenium-webdriver");
 
 const driver = new webdriver.Builder().forBrowser("chrome").build();
 driver.manage().setTimeouts({ implicit: 10000 });
@@ -48,6 +49,106 @@ class BasePage {
 
   async waitForElementIsNotVisible(element) {
     await this.driver.wait(webdriver.until.elementIsNotVisible(element), 10000);
+  }
+
+  #elementFetcher = async (locator) => {
+    const element =
+      (await locator) instanceof WebElement
+        ? locator
+        : this.findElementByLocator(locator);
+
+    return element;
+  };
+
+  /**
+   * This method waits for element to be visible for the given time
+   *
+   * @param {*} locator Object, i.e.  { xpath: "//*[@id='Any']" } or WebElement
+   * @param {number} time time delay value in seconds, 30.
+   */
+  async newWaitUntil(locator, time = 30) {
+    await this.driver.wait(
+      webdriver.until.elementIsVisible(
+        await this.#elementFetcher(locator),
+        time * 1000
+      )
+    );
+  }
+
+  /**
+   * This method will set implicit timeout for the driver
+   *
+   * @param {number} time delay value in seconds
+   */
+  #setImplicitTimeout = async (time) => {
+    await this.driver.manage().setTimeouts({ implicit: time * 1000 });
+  };
+
+  /**
+   * To click on the web element
+   *
+   * @param {*} locator Object, i.e.  { xpath: "//*[@id='Any']" } or WebElement
+   * @param {number} time Delay value in seconds . Default value is 20 seconds
+   */
+  async newClickByLocator(locator, time = 20) {
+    // Set an implicit timeout for the action
+    await this.#setImplicitTimeout(time);
+
+    // Fetch the element using the provided locator
+    const element = await this.#elementFetcher(locator);
+
+    try {
+      // Attempt to directly click the element
+      await element.click();
+    } catch (e) {
+      // If direct click fails, execute a click using JavaScript
+      await this.driver.executeScript(`(arguments[0]).click();`, element);
+    }
+
+    // Reset the implicit timeout to the default value
+    await this.#setDefaultImplicitTimeout();
+  }
+
+  /**
+   * This method will set implicit timeout for the driver to 20 seconds
+   */
+  #setDefaultImplicitTimeout = async () => {
+    await this.driver.manage().setTimeouts({ implicit: 20000 });
+  };
+
+  /**
+   * This method returns element text
+   *
+   * @param {*} locator Object, i.e.  { xpath: "//*[@id='Any']" } or WebElement
+   * @param {number} time Delay value in seconds . Default value is 20 seconds
+   * @returns {string} text value of the element
+   */
+  async getText(locator, time = 20) {
+    await this.#setImplicitTimeout(time);
+    const element = await this.#elementFetcher(locator);
+
+    await this.#setDefaultImplicitTimeout();
+    return element.getText();
+  }
+
+  /**
+   * This returns a boolean value based on whether element is enabled or not
+   *
+   * @param {*} locator Object, i.e.  { xpath: "//*[@id='Any']" } or WebElement
+   * @param {number} time Delay value in seconds . Default value is 20 seconds
+   * @returns {boolean} Boolean value based on element enabled condition
+   */
+  async isEnabled(locator, time = 20) {
+    await this.#setImplicitTimeout(time);
+    try {
+      const element = await this.#elementFetcher(locator);
+
+      return element.isEnabled();
+    } catch (error) {
+      return false;
+    } finally {
+      await this.#setDefaultImplicitTimeout();
+    }
   }
 
   async clickElementWithWait(locator) {

@@ -36,7 +36,7 @@ class PassengerDetails extends BasePage {
     await this.driver.sleep(2000);
 
     // find adult pax
-    await this.waitForElementIsLocated(this.dropDownTitleLoc);
+    await this.newWaitUntil(this.dropDownTitleLoc);
     const adultPaxElements = await this.findElementsByLocator(
       this.adultPaxCardLoc
     );

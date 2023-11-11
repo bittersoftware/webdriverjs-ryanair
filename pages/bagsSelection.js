@@ -14,23 +14,27 @@ class BagsSelectionPage extends BasePage {
 
   async selectSmallBag() {
     try {
-      await this.waitForElementIsLocated(this.smallBagLoc);
+      await this.newWaitUntil(this.smallBagLoc, 5);
       const smallBagEl = this.findElementByLocator(this.smallBagLoc);
       this.driver.actions().move(smallBagEl);
       await this.clickElementWithWait(this.smallBagLoc);
     } catch (TimeoutError) {
-      console.info("Bags already included");
+      console.info("bags already included");
     }
   }
 
   async selectCheckInBagsForAll(weight) {
-    await this.driver.sleep(3000);
-    const checkInBagTableEl = await this.findElementByLocator(
-      this.checkInBagTableLoc
-    );
+    // await this.driver.sleep(3000);
+    // const checkInBagTableEl = await this.findElementByLocator(
+    //   this.checkInBagTableLoc
+    // );
 
-    await this.waitForElementIsVisible(checkInBagTableEl);
-    await this.scrollToElement(checkInBagTableEl);
+    // await this.waitForElementIsVisible(checkInBagTableEl);
+    await this.newWaitUntil(this.checkInBagTableLoc);
+
+    await this.scrollToElement(
+      await this.findElementByLocator(this.checkInBagTableLoc)
+    );
 
     const selectForAllPaxEls = await this.findElementsByLocator(
       this.checkInBagForAllLoc
@@ -48,18 +52,20 @@ class BagsSelectionPage extends BasePage {
   async selectContinue() {
     await this.scrollToBottom();
     await this.driver.sleep(3000);
-    await this.waitForPageToLoad(5);
+    await this.newWaitUntil(this.continueButtonLoc);
+    await this.newClickByLocator(this.continueButtonLoc);
+    // await this.waitForPageToLoad(5);
 
-    const continueButtonEl = await this.findElementByLocator(
-      this.continueButtonLoc
-    );
-    this.driver.actions().move(continueButtonEl);
+    // const continueButtonEl = await this.findElementByLocator(
+    //   this.continueButtonLoc
+    // );
+    // this.driver.actions().move(continueButtonEl);
 
-    await this.waitForElementIsEnabled(
-      await this.findElementByLocator(this.continueButtonLoc)
-    );
+    // await this.waitForElementIsEnabled(
+    //   await this.findElementByLocator(this.continueButtonLoc)
+    // );
 
-    await this.clickByLocator(this.continueButtonLoc);
+    // await this.clickByLocator(this.continueButtonLoc);
   }
 }
 
