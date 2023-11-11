@@ -24,11 +24,11 @@ class BagsSelectionPage extends BasePage {
    */
   async selectSmallBag() {
     try {
-      await this.waitForElementIsLocated(this.elements.smallBagLoc, 3000);
+      await this.waitForElementIsLocated(this.elements.smallBagLoc, 2);
       const smallBagEl = this.findElementByLocator(this.elements.smallBagLoc);
       this.driver.actions().move(smallBagEl);
       await this.clickByLocator(this.elements.smallBagLoc);
-    } catch (TimeoutError) {
+    } catch {
       console.info("bags already included");
     }
   }
