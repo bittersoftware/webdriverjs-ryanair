@@ -6,6 +6,9 @@ const formatDate = require("../utils/formatDate");
 class HomePage extends BasePage {
   constructor() {
     super();
+    this.elements = {
+      bla: 1,
+    };
     this.oneWay = By.xpath(
       "//ry-radio-button[@data-ref='flight-search-trip-type__one-way-trip']"
     );

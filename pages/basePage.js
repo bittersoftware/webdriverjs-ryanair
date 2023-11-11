@@ -1,5 +1,5 @@
 const webdriver = require("selenium-webdriver");
-const { WebElement } = require("selenium-webdriver");
+const { WebElement, By } = require("selenium-webdriver");
 
 const driver = new webdriver.Builder().forBrowser("chrome").build();
 driver.manage().setTimeouts({ implicit: 10000 });
@@ -31,24 +31,16 @@ class BasePage {
     await this.driver.findElement(locator).click();
   }
 
-  async waitForElementIsLocated(locator) {
-    await this.driver.wait(webdriver.until.elementLocated(locator), 10000);
+  async waitForElementIsLocated(locator, time = 10000) {
+    await this.driver.wait(webdriver.until.elementLocated(locator), time);
   }
 
-  async waitForElementIsVisible(element) {
-    await this.driver.wait(webdriver.until.elementIsVisible(element), 10000);
+  async waitForElementIsVisible(element, time = 10000) {
+    await this.driver.wait(webdriver.until.elementIsVisible(element), time);
   }
 
-  async waitForElementIsEnabled(element) {
-    await this.driver.wait(webdriver.until.elementIsEnabled(element), 10000);
-  }
-
-  async waitForElementIsStaleness(element) {
-    await this.driver.wait(webdriver.until.stalenessOf(element), 10000);
-  }
-
-  async waitForElementIsNotVisible(element) {
-    await this.driver.wait(webdriver.until.elementIsNotVisible(element), 10000);
+  async waitForElementIsEnabled(element, time = 1000) {
+    await this.driver.wait(webdriver.until.elementIsEnabled(element), time);
   }
 
   #elementFetcher = async (locator) => {

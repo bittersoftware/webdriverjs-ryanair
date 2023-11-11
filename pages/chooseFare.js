@@ -4,19 +4,33 @@ const BasePage = require("./basePage");
 class ChooseFare extends BasePage {
   constructor() {
     super();
-    this.fareColsLoc = By.css("th.fare-table__fare-column");
-    this.fareNamesLoc = By.css("span.fare-header__name");
-    this.continueButtonLoc = By.xpath(
-      "//ry-spinner[contains(text(), 'Continue')]"
-    );
-    this.switchToRegularButtonLoc = By.xpath(
-      "//ry-spinner[contains(text(), 'Switch')]"
-    );
+
+    this.elements = {
+      fareColsLoc: By.css("th.fare-table__fare-column"),
+      fareNamesLoc: By.css("span.fare-header__name"),
+      continueButtonLoc: By.xpath("//ry-spinner[contains(text(), 'Continue')]"),
+      switchToRegularButtonLoc: By.xpath(
+        "//ry-spinner[contains(text(), 'Switch')]"
+      ),
+    };
   }
 
-  async selectCheckInBagFareByIndex(fareName) {
-    const fareNames = await this.findElementsByLocator(this.fareNamesLoc);
-    const faresColumns = await this.findElementsByLocator(this.fareColsLoc);
+  /**
+   * Clicks in the fare by the name passed as argument
+   * Find fare elements. Each fare is a column in the fare table
+   * It checks what column of fares contains the fare name
+   * Clicks in the element index that title matches
+   * fareName is the fare title. Ex: "BASIC"
+   * @param {string} fareName
+   * @returns {undefined}
+   */
+  async selectFareByName(fareName) {
+    const fareNames = await this.findElementsByLocator(
+      this.elements.fareNamesLoc
+    );
+    const faresColumns = await this.findElementsByLocator(
+      this.elements.fareColsLoc
+    );
 
     for (let i = 0; i < fareNames.length; i++) {
       if ((await fareNames[i].getText()) === fareName) {
@@ -28,19 +42,30 @@ class ChooseFare extends BasePage {
     throw new Error(`Fare not found ${fareName}`);
   }
 
+  /**
+   * Clicks in Continue in confirm fare dialog
+   * Some flights do not have basic fare available and error dialog is displayed
+   * TODO: Fall back to switch to regular method if error dialog is displayed
+   * @returns {undefined}
+   */
   async selectContinueWithBasic() {
     const buttonContinueWithBasicEl = await this.findElementByLocator(
-      this.continueSwitchButtonsLoc
+      this.elements.continueButtonLoc
     );
     await buttonContinueWithBasicEl.click();
   }
 
+  /**
+   * Clicks in Switch To Regular in confirm fare dialog
+   * @returns {undefined}
+   */
   async selectSwitchToRegular() {
-    const buttonSwitchToRegularEl = await this.findElementByLocator(
-      this.switchToRegularButtonLoc
-    );
-    await this.clickElementWithJavaScriptExec(buttonSwitchToRegularEl);
-    // await this.clickElementWithWait(this.switchToRegularButtonLoc);
+    await this.newWaitUntil(this.elements.switchToRegularButtonLoc);
+    await this.newClickByLocator(this.elements.switchToRegularButtonLoc);
+    // const buttonSwitchToRegularEl = await this.findElementByLocator(
+    //   this.elements.switchToRegularButtonLoc
+    // );
+    // await this.clickElementWithJavaScriptExec(buttonSwitchToRegularEl);
   }
 }
 
