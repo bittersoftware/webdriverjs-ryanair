@@ -4,11 +4,21 @@ const BasePage = require("./basePage");
 class SelectFlights extends BasePage {
   constructor() {
     super();
-    this.selectBtnLocator = By.css("button.flight-card-summary__select-btn");
+
+    this.elements = {
+      selectBtnLocator: By.css("button.flight-card-summary__select-btn"),
+    };
   }
 
+  /**
+   * Selects flight from result list by index
+   * @param {number} index
+   * @returns {undefined}
+   */
   async selectFlightByIndex(index) {
-    const flights = await this.findElementsByLocator(this.selectBtnLocator);
+    const flights = await this.findElementsByLocator(
+      this.elements.selectBtnLocator
+    );
     await flights[index].click();
   }
 }

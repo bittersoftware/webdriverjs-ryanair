@@ -4,15 +4,22 @@ const BasePage = require("./basePage");
 class SignInDialogPage extends BasePage {
   constructor() {
     super();
-    this.signInDialogLoc = By.css("div.signup-dialog");
+
+    this.elements = {
+      signInDialogLoc: By.css("div.signup-dialog"),
+    };
   }
 
+  /**
+   * Get SignIn Dialog WebElement
+   * @returns {WebElement}
+   */
   async getSignInDialogEl() {
     const signInDialogEl = await this.findElementByLocator(
-      this.signInDialogLoc
+      this.elements.signInDialogLoc
     );
     await this.waitForElementIsVisible(signInDialogEl);
-    return this.findElementByLocator(this.signInDialogLoc);
+    return this.findElementByLocator(this.elements.signInDialogLoc);
   }
 }
 

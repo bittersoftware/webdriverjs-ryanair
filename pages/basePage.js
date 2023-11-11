@@ -22,14 +22,14 @@ class BasePage {
   }
 
   /**
-   * Set implicit timeout for the driver to 20 seconds
+   * Sets implicit timeout for the driver to 10 seconds
    */
   #setDefaultImplicitTimeout = async () => {
-    await this.driver.manage().setTimeouts({ implicit: 20000 });
+    await this.driver.manage().setTimeouts({ implicit: 10000 });
   };
 
   /**
-   * Find WebElement by locator
+   * Finds WebElement by locator
    * @param {By} locator
    * @returns {WebElement}
    */
@@ -49,25 +49,31 @@ class BasePage {
   /**
    * Waits for WebElement is located
    * @param {By} locator
-   * @param {number} time=10000
+   * @param {number} time in seconds. Defaults to 10
    * @returns {WebElement}
    */
-  async waitForElementIsLocated(locator, time = 10000) {
-    await this.driver.wait(webdriver.until.elementLocated(locator), time);
+  async waitForElementIsLocated(locator, time = 10) {
+    await this.driver.wait(
+      webdriver.until.elementLocated(locator),
+      time * 1000
+    );
   }
 
   /**
    * Waits for WebElement is enabled
    * @param {By} locator
-   * @param {number} time=10000
+   * @param {number} time in seconds. Defaults to 10
    * @returns {WebElement}
    */
-  async waitForElementIsEnabled(element, time = 1000) {
-    await this.driver.wait(webdriver.until.elementIsEnabled(element), time);
+  async waitForElementIsEnabled(element, time = 10) {
+    await this.driver.wait(
+      webdriver.until.elementIsEnabled(element),
+      time * 1000
+    );
   }
 
   /**
-   * Fetch WebElement.
+   * Fetches WebElement.
    * Returns WebElement if locator is already a WebElement
    * Find WebElement if locator is a By locator
    * @param {By|WebElement} locator
@@ -83,8 +89,7 @@ class BasePage {
   };
 
   /**
-   * This method waits for element to be visible for the given time
-   *
+   * Waits for element to be visible for the given time
    * @param {By|WebElement} locator
    * @param {number} time time delay value in seconds, 30.
    */
@@ -98,8 +103,7 @@ class BasePage {
   }
 
   /**
-   * This method will set implicit timeout for the driver
-   *
+   * Set implicit timeout for the driver
    * @param {number} time delay value in seconds
    */
   #setImplicitTimeout = async (time) => {
@@ -125,6 +129,12 @@ class BasePage {
     await this.#setDefaultImplicitTimeout();
   }
 
+  /**
+   * Retry click the button if element is stale
+   * @param {By} locator
+   * @param {number} retries defaults to 5
+   * @returns {undefined}
+   */
   async clickByLocatorWithRetry(locator, retries = 5) {
     for (let i = 0; i < retries; i += 1) {
       try {
