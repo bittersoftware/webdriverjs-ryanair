@@ -10,11 +10,13 @@ class ExtrasPage extends BasePage {
 
   async selectContinueForAirportAndTrip() {
     await this.scrollToBottom();
+    await this.waitForElementIsLocated(this.continueAirportAndTripLoc);
     await this.clickByLocator(this.continueAirportAndTripLoc);
   }
 
   async selectContinueForTransport() {
     await this.scrollToBottom();
+    await this.waitForElementIsLocated(this.continueTransportLoc);
     await this.clickByLocator(this.continueTransportLoc);
   }
 }

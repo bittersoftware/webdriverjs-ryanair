@@ -4,13 +4,13 @@ const {
 } = require("@cucumber/cucumber");
 const { Given, When, Then, AfterAll } = require("@cucumber/cucumber");
 const { assert } = require("chai");
-const cookiesPage = require("../../pages/cookiesPopUp");
+const cookiesPage = require("../../pages/cookiesDialog");
 const HomePage = require("../../pages/homePage");
 const SelectFlights = require("../../pages/selectFlights");
 const ChooseFare = require("../../pages/chooseFare");
 const PassengerDetails = require("../../pages/passengerDetails");
 const SelectSeatsPage = require("../../pages/selectSeats");
-const FastTrackPage = require("../../pages/fastTrackPopUp");
+const FastTrackPage = require("../../pages/fastTrackDialog");
 const BagsSelectionPage = require("../../pages/bagsSelection");
 const ExtrasPage = require("../../pages/extrasOptions");
 const SignInDialogPage = require("../../pages/signInDialog");
@@ -71,5 +71,5 @@ Then("login popup shows up", async () => {
 });
 
 AfterAll(async () => {
-  await driver.quit();
+  // await driver.quit();
 });

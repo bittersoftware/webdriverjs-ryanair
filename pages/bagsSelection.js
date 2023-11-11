@@ -1,4 +1,4 @@
-const { By } = require("selenium-webdriver");
+const { By, Key } = require("selenium-webdriver");
 const BasePage = require("./basePage");
 
 class BagsSelectionPage extends BasePage {
@@ -13,16 +13,23 @@ class BagsSelectionPage extends BasePage {
   }
 
   async selectSmallBag() {
-    await this.waitForElementIsLocated(this.smallBagLoc);
-    const smallBagEl = this.findElementByLocator(this.smallBagLoc);
-    this.driver.actions().move(smallBagEl);
-    await this.clickElementWithWait(this.smallBagLoc);
+    try {
+      await this.waitForElementIsLocated(this.smallBagLoc);
+      const smallBagEl = this.findElementByLocator(this.smallBagLoc);
+      this.driver.actions().move(smallBagEl);
+      await this.clickElementWithWait(this.smallBagLoc);
+    } catch (TimeoutError) {
+      console.info("Bags already included");
+    }
   }
 
   async selectCheckInBagsForAll(weight) {
+    await this.driver.sleep(3000);
     const checkInBagTableEl = await this.findElementByLocator(
       this.checkInBagTableLoc
     );
+
+    await this.waitForElementIsVisible(checkInBagTableEl);
     await this.scrollToElement(checkInBagTableEl);
 
     const selectForAllPaxEls = await this.findElementsByLocator(
@@ -40,7 +47,33 @@ class BagsSelectionPage extends BasePage {
 
   async selectContinue() {
     await this.scrollToBottom();
-    await this.clickElementWithWait(this.continueButtonLoc);
+    await this.driver.sleep(3000);
+    await this.waitForPageToLoad(5);
+
+    const continueButtonEl = await this.findElementByLocator(
+      this.continueButtonLoc
+    );
+    this.driver.actions().move(continueButtonEl);
+
+    await this.waitForElementIsEnabled(
+      await this.findElementByLocator(this.continueButtonLoc)
+    );
+
+    await console.error(
+      `Continue Btn El: ${continueButtonEl.getAttribute("innerHTML")}`
+    );
+    // await this.clickElementWithWait(this.continueButtonLoc);
+    // await continueButtonEl.click();
+    console.error("Click 3");
+    await this.clickByLocator(this.continueButtonLoc);
+    // console.error("Click 4");
+    // console.error("Click 5");
+    // continueButtonEl = await this.findElementByLocator(this.continueButtonLoc);
+    // await continueButtonEl.click();
+    // console.error("Click 6");
+    // await continueButtonEl.sendKeys(Key.RETURN);
+    // await continueButtonEl.sendKeys(Key.ENTER);
+    // console.error("Clicked");
   }
 }
 

@@ -1,5 +1,6 @@
 const { By } = require("selenium-webdriver");
 const BasePage = require("./basePage");
+const getFamilyRows = require("../utils/getFamilyRows");
 
 class SelectSeatsPage extends BasePage {
   constructor() {
@@ -16,23 +17,17 @@ class SelectSeatsPage extends BasePage {
   }
 
   async #updateFamilyRows() {
+    this.driver.sleep(5000);
     await this.waitForElementIsLocated(this.seatPopUpTextLoc);
     const popUpEl = await this.findElementByLocator(this.seatPopUpTextLoc);
+    await this.waitForElementIsEnabled(popUpEl);
+    await console.info(`popUp El: ${popUpEl.getAttribute("innerHTML")}`);
     const fullText = await popUpEl.getText();
-
-    const regex = /(\d+)-(\d+)/;
-    const match = fullText.match(regex);
-
-    if (match) {
-      const firstRow = parseInt(match[1], 10);
-      const lastRow = parseInt(match[2], 10);
-      this.familyRows = [firstRow, lastRow];
-    } else {
-      throw new Error("No family rows found in the text.");
-    }
+    this.familyRows = await getFamilyRows(fullText);
   }
 
   async dismissFamilyWarningPopUp() {
+    await this.waitForPageToLoad(5);
     await this.#updateFamilyRows();
     await this.clickElementWithWait(this.seatPopUpButtonLoc);
     // wait for airplane seats animation before proceed

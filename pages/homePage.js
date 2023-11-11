@@ -77,13 +77,7 @@ class HomePage extends BasePage {
 
     this.airport_name = By.css(`span[data-id='${airportCode}']`);
     const airportElement = await this.findElementByLocator(this.airport_name);
-
-    // TODO: review this solution
-    this.driver.executeScript(
-      "arguments[0].scrollIntoView(true);",
-      airportElement
-    );
-    await new Promise((r) => setTimeout(r, 1000));
+    this.scrollToElement(airportElement);
     await this.clickByLocator(this.airport_name);
   }
 
@@ -109,9 +103,9 @@ class HomePage extends BasePage {
     );
 
     await this.waitForElementIsLocated(this.date);
-    await this.waitForElementIsEnabled(
-      await this.findElementByLocator(this.date)
-    );
+    const dateElement = await this.findElementByLocator(this.date);
+    await this.waitForElementIsEnabled(dateElement);
+    this.driver.actions().move(dateElement);
     await this.clickElementWithWait(this.date);
   }
 

@@ -39,7 +39,8 @@ class ChooseFare extends BasePage {
     const buttonSwitchToRegularEl = await this.findElementByLocator(
       this.switchToRegularButtonLoc
     );
-    await buttonSwitchToRegularEl.click();
+    await this.clickElementWithJavaScriptExec(buttonSwitchToRegularEl);
+    // await this.clickElementWithWait(this.switchToRegularButtonLoc);
   }
 }
 

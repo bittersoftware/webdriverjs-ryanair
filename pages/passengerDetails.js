@@ -25,11 +25,16 @@ class PassengerDetails extends BasePage {
       this.loginLaterLoc
     );
     this.waitForElementIsLocated(this.loginLaterLoc);
+    this.waitForElementIsVisible(loginLaterElement);
     this.driver.actions().move(loginLaterElement);
     await loginLaterElement.click();
   }
 
   async fillPassengerDetails() {
+    this.scrollToBottom();
+    // Wait for component reload
+    await this.driver.sleep(2000);
+
     // find adult pax
     await this.waitForElementIsLocated(this.dropDownTitleLoc);
     const adultPaxElements = await this.findElementsByLocator(
@@ -61,8 +66,6 @@ class PassengerDetails extends BasePage {
     let paxLastNameLoc;
     let paxTitleLoc;
 
-    this.scrollToBottom();
-
     for (let i = 0; i < paxCardEls.length; i += 1) {
       this.driver.actions().move(paxCardEls[i]);
 
@@ -90,7 +93,6 @@ class PassengerDetails extends BasePage {
   }
 
   async selectContinue() {
-    await this.driver.sleep(2000);
     const continueButtonEl = await this.findElementByLocator(
       this.continueButtonLoc
     );

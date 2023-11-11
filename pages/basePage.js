@@ -51,27 +51,59 @@ class BasePage {
   }
 
   async clickElementWithWait(locator) {
-    for (let j = 0; j < 5; j += 1) {
+    for (let i = 0; i < 5; i += 1) {
       try {
         const dateElement = await this.findElementByLocator(locator);
         await dateElement.click();
         return;
       } catch (StaleElementReferenceError) {
-        console.error(`Element not found: ${locator}`);
+        console.info(`Element not found in try ${i}: ${locator}`);
       }
     }
     throw new Error(`Element not found for ${locator}`);
   }
 
+  async clickElementWithJavaScriptExec(element) {
+    await this.driver.executeScript("arguments[0].click();", element);
+  }
+
   async scrollToElement(element) {
-    // TODO: review this solution
     this.driver.executeScript("arguments[0].scrollIntoView(true);", element);
-    await new Promise((r) => setTimeout(r, 1000));
+    await this.driver.sleep(1000);
   }
 
   async scrollToBottom() {
     this.driver.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-    await new Promise((r) => setTimeout(r, 1000));
+    await this.driver.sleep(1000);
+  }
+
+  async waitForPageToLoad(timeOutInSeconds) {
+    const startTime = Date.now();
+    let documentReadyState;
+
+    while (
+      documentReadyState !== "complete" &&
+      Date.now() - startTime < timeOutInSeconds * 1000
+    ) {
+      try {
+        documentReadyState = await driver.executeScript(
+          "return document.readyState"
+        );
+
+        // Wait for a short interval before checking again
+        this.driver.sleep(500);
+      } catch (error) {
+        throw new Error(
+          `Error while waiting for page to load: ${error.message}`
+        );
+      }
+    }
+
+    if (documentReadyState !== "complete") {
+      throw new Error(
+        `Timeout waiting for page to load within ${timeOutInSeconds} seconds`
+      );
+    }
   }
 
   async closeBrowser() {
