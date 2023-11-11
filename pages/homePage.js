@@ -19,6 +19,7 @@ class HomePage extends BasePage {
     this.airport_name = By.css("span[data-id='{airportCode}']");
     this.datesFrom = By.css("fsw-input-button[uniqueid$='dates-from']");
     this.date = By.css("div[data-id='{date}'");
+    this.passengersInput = By.css("ry-input-button[uniqueid='passengers']");
     this.currentAdultPassengers = By.xpath(
       "//ry-counter[@data-ref='passengers-picker__adults'] //div[@data-ref='counter.counter__value']"
     );
@@ -105,6 +106,7 @@ class HomePage extends BasePage {
       `div.datepicker__calendars div[data-id='${formattedDate}']`
     );
 
+    await this.scrollToTopOfPage();
     await this.waitForElementIsLocated(this.date);
     const dateElement = await this.findElementByLocator(this.date);
     await this.waitForElementIsEnabled(dateElement);
@@ -136,6 +138,10 @@ class HomePage extends BasePage {
     incrementLocator,
     decrementLocator
   ) {
+    await this.scrollToElement(
+      await this.findElementByLocator(this.passengersInput)
+    );
+    await this.clickByLocator(this.passengersInput);
     await this.waitForElementIsLocated(currentPaxLocator);
 
     const currentPaxElement = await this.findElementByLocator(

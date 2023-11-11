@@ -31,7 +31,7 @@ class PassengerDetails extends BasePage {
   }
 
   async fillPassengerDetails() {
-    this.scrollToBottom();
+    this.scrollToBottomOfPage();
     // Wait for component reload
     await this.driver.sleep(2000);
 

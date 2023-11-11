@@ -38,7 +38,7 @@ class BasePage {
   }
 
   /**
-   * Find WebElements by locator
+   * Finds WebElements by locator
    * @param {By} locator
    * @returns {WebElement[]}
    */
@@ -46,22 +46,22 @@ class BasePage {
     return this.driver.findElements(locator);
   }
 
-  // async clickByLocator(locator) {
-  //   await this.driver.findElement(locator).click();
-  // }
-
-  // async retryClickByLocator(locator) {
-  //   await this.driver.findElement(locator).click();
-  // }
-
+  /**
+   * Waits for WebElement is located
+   * @param {By} locator
+   * @param {number} time=10000
+   * @returns {WebElement}
+   */
   async waitForElementIsLocated(locator, time = 10000) {
     await this.driver.wait(webdriver.until.elementLocated(locator), time);
   }
 
-  // async waitForElementIsVisible(element, time = 10000) {
-  //   await this.driver.wait(webdriver.until.elementIsVisible(element), time);
-  // }
-
+  /**
+   * Waits for WebElement is enabled
+   * @param {By} locator
+   * @param {number} time=10000
+   * @returns {WebElement}
+   */
   async waitForElementIsEnabled(element, time = 1000) {
     await this.driver.wait(webdriver.until.elementIsEnabled(element), time);
   }
@@ -107,27 +107,21 @@ class BasePage {
   };
 
   /**
-   * To click on the web element
-   *
+   * Clicks on the WebElement
    * @param {By|WebElement} locator
    * @param {number} time Delay value in seconds . Default value is 20 seconds
    */
   async clickByLocator(locator, time = 20) {
-    // Set an implicit timeout for the action
     await this.#setImplicitTimeout(time);
-
-    // Fetch the element using the provided locator
     const element = await this.#elementFetcher(locator);
 
     try {
-      // Attempt to directly click the element
       await element.click();
     } catch (e) {
       // If direct click fails, execute a click using JavaScript
       await this.driver.executeScript(`(arguments[0]).click();`, element);
     }
 
-    // Reset the implicit timeout to the default value
     await this.#setDefaultImplicitTimeout();
   }
 
@@ -145,9 +139,8 @@ class BasePage {
   }
 
   /**
-   * This method returns element text
-   *
-   * @param {*} locator Object, i.e.  { xpath: "//*[@id='Any']" } or WebElement
+   * Gets element text
+   * @param {By|WebElement} locator
    * @param {number} time Delay value in seconds . Default value is 20 seconds
    * @returns {string} text value of the element
    */
@@ -162,21 +155,34 @@ class BasePage {
   /**
    * Scroll to WebElement
    * @param {WebElement} element
+   * @param {number} wait time in seconds
    * @returns {undefined}
    */
-  async scrollToElement(element, wait = 1000) {
+  async scrollToElement(element, wait = 1) {
     this.driver.executeScript("arguments[0].scrollIntoView(true);", element);
-    await this.driver.sleep(wait);
+    await this.driver.sleep(wait * 1000);
   }
 
   /**
-   * Scroll to bottom of the page
-   * @param {number} wait=1000
+   * Scrolls to the top of the page and wait
+   * @param {number} wait time in seconds
    * @returns {undefined}
    */
-  async scrollToBottom(wait = 1000) {
+  async scrollToTopOfPage(wait = 1) {
+    await this.driver.executeScript(
+      "window.scrollTo(document.body.scrollHeight, 0)"
+    );
+    await this.driver.sleep(wait * 1000);
+  }
+
+  /**
+   * Scrolls to bottom of the page and wait
+   * @param {number} wait time in seconds
+   * @returns {undefined}
+   */
+  async scrollToBottomOfPage(wait = 1) {
     this.driver.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-    await this.driver.sleep(wait);
+    await this.driver.sleep(wait * 1000);
   }
 
   /**
