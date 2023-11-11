@@ -87,7 +87,7 @@ class BagsSelectionPage extends BasePage {
     await this.scrollToBottom();
     await this.driver.sleep(3000);
     await this.newWaitUntil(this.elements.continueButtonLoc);
-    await this.newClickByLocator(this.elements.continueButtonLoc);
+    await this.clickByLocator(this.elements.continueButtonLoc);
   }
 }
 

@@ -23,9 +23,9 @@ class BasePage {
     return this.driver.findElements(locator);
   }
 
-  async clickByLocator(locator) {
-    await this.driver.findElement(locator).click();
-  }
+  // async clickByLocator(locator) {
+  //   await this.driver.findElement(locator).click();
+  // }
 
   async retryClickByLocator(locator) {
     await this.driver.findElement(locator).click();
@@ -82,7 +82,7 @@ class BasePage {
    * @param {*} locator Object, i.e.  { xpath: "//*[@id='Any']" } or WebElement
    * @param {number} time Delay value in seconds . Default value is 20 seconds
    */
-  async newClickByLocator(locator, time = 20) {
+  async clickByLocator(locator, time = 20) {
     // Set an implicit timeout for the action
     await this.#setImplicitTimeout(time);
 
@@ -121,26 +121,6 @@ class BasePage {
 
     await this.#setDefaultImplicitTimeout();
     return element.getText();
-  }
-
-  /**
-   * This returns a boolean value based on whether element is enabled or not
-   *
-   * @param {*} locator Object, i.e.  { xpath: "//*[@id='Any']" } or WebElement
-   * @param {number} time Delay value in seconds . Default value is 20 seconds
-   * @returns {boolean} Boolean value based on element enabled condition
-   */
-  async isEnabled(locator, time = 20) {
-    await this.#setImplicitTimeout(time);
-    try {
-      const element = await this.#elementFetcher(locator);
-
-      return element.isEnabled();
-    } catch (error) {
-      return false;
-    } finally {
-      await this.#setDefaultImplicitTimeout();
-    }
   }
 
   async clickElementWithWait(locator) {
