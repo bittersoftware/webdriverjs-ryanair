@@ -2,9 +2,11 @@ const webdriver = require("selenium-webdriver");
 // By used in jsdoc
 // eslint-disable-next-line no-unused-vars
 const { WebElement, By } = require("selenium-webdriver");
+const parameters = require("../config/testSettings");
 
-const driver = new webdriver.Builder().forBrowser("chrome").build();
-// driver.manage().setTimeouts({ implicit: 10000 });
+const driver = new webdriver.Builder()
+  .forBrowser(parameters.parameters.browser)
+  .build();
 driver.manage().window().maximize();
 
 class BasePage {

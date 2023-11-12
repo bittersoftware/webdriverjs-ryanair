@@ -1,10 +1,6 @@
-const {
-  defineParameterType,
-  setDefaultTimeout,
-} = require("@cucumber/cucumber");
+const { setDefaultTimeout } = require("@cucumber/cucumber");
 const { Given, When, Then, AfterAll } = require("@cucumber/cucumber");
 const { assert } = require("chai");
-const cookiesPage = require("../../pages/cookiesDialog");
 const HomePage = require("../../pages/homePage");
 const SelectFlights = require("../../pages/selectFlights");
 const ChooseFare = require("../../pages/chooseFare");
@@ -17,22 +13,9 @@ const SignInDialogPage = require("../../pages/signInDialog");
 
 setDefaultTimeout(60 * 1000);
 
-defineParameterType({
-  name: "date",
-  regexp: /(\d{2}\/\d{2}\/\d{4})/,
-  transformer: (dateString) => new Date(dateString),
-});
-
-Given("I open Ryanair webpage", async () => {
-  // TODO: move base url to settings
-  await cookiesPage.goToUrl("https://www.ryanair.com/ie/en");
-  await cookiesPage.acceptCookies();
-});
-
 Given(
   "I search for a flight from {string} to {string} on {date} for {int} adults and {int} child",
   async (departure, destination, date, adult, child) => {
-    // TODO: Select Flights tab
     await HomePage.selectOneWayTrip();
     await HomePage.selectDeparture(departure);
     await HomePage.selectDestination(destination);
@@ -87,5 +70,5 @@ Then("login popup shows up", async () => {
 });
 
 AfterAll(async () => {
-  // await driver.quit();
+  await global.driver.quit();
 });
