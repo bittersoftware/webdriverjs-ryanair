@@ -12,6 +12,7 @@
     "chai": "^4.3.10",
     "chromedriver": "^119.0.0",
     "cucumber": "^6.0.7",
+    "geckodriver": "^4.2.1",
     "selenium-webdriver": "^4.15.0"
   },
   "devDependencies": {
