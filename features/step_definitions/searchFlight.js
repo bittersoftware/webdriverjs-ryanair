@@ -47,25 +47,41 @@ Given(
 When(
   "I proceed to pay with selected seats and {int}kg bags added",
   async (weight) => {
+    // Gets first flight in the list
     await SelectFlights.selectFlightByIndex(0);
+
+    // Choose "BASIC" fare
     await ChooseFare.selectFareByName("BASIC");
+
+    // Switch to Regular
     await ChooseFare.selectSwitchToRegular();
+
+    // Fill passenger detail with random data
     await PassengerDetails.selectLoginLater();
     await PassengerDetails.fillPassengerDetails();
     await PassengerDetails.selectContinue();
-    await SelectSeatsPage.dismissFamilyWarningPopUp();
+
+    // Look for 3 consecutive empty seats
+    await SelectSeatsPage.dismissFamilyWarningDialog();
     await SelectSeatsPage.findFirstAvailableSeats(3);
     await SelectSeatsPage.clickContinueButton();
+
+    // Dismiss Fast Track Dialog
     await FastTrackPage.selectNoThanks();
+
+    // Select bags. Adds 20Kg bags for all pax
     await BagsSelectionPage.selectSmallBag();
     await BagsSelectionPage.selectCheckInBagsForAll(weight);
     await BagsSelectionPage.selectContinue();
+
+    // Skip Extras
     await ExtrasPage.selectContinueForAirportAndTrip();
     await ExtrasPage.selectContinueForTransport();
   }
 );
 
 Then("login popup shows up", async () => {
+  // Assert Sign In Dialog WebElement was found
   const signInDialogEl = await SignInDialogPage.getSignInDialogEl();
   assert.exists(signInDialogEl, "Sign In Dialog WebElement not Found");
 });

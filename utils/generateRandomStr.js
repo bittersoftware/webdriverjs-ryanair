@@ -1,3 +1,8 @@
+/**
+ * Generate random strings at specified length
+ * @param {number} length
+ * @returns {string}
+ */
 function generateRandomString(length) {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   let randomString = "";

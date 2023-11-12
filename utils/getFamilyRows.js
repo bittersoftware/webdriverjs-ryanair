@@ -1,3 +1,8 @@
+/**
+ * Returns list of numbers for initial and final rows for family
+ * @param {string} fullText
+ * @returns {number[]} fist and last family rows
+ */
 async function getFamilyRows(fullText) {
   // Looks for family rows range. Ex: 18-33
   const regex = /(\d+)-(\d+)/;
@@ -11,7 +16,7 @@ async function getFamilyRows(fullText) {
     return [firstRow, lastRow];
   }
 
-  // Default family Seats
+  // Default family seats if not match
   console.info("Use default rows");
   return [18, 33];
 }
