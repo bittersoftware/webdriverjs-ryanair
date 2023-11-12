@@ -1,4 +1,6 @@
 const webdriver = require("selenium-webdriver");
+// By used in jsdoc
+// eslint-disable-next-line no-unused-vars
 const { WebElement, By } = require("selenium-webdriver");
 
 const driver = new webdriver.Builder().forBrowser("chrome").build();

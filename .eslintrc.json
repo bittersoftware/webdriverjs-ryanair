@@ -16,6 +16,7 @@
     "no-plusplus": "off",
     "no-console": "off",
     "operator-linebreak": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "import/no-extraneous-dependencies": "off"
   }
 }
