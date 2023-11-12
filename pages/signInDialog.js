@@ -15,10 +15,10 @@ class SignInDialogPage extends BasePage {
    * @returns {WebElement}
    */
   async getSignInDialogEl() {
-    const signInDialogEl = await this.findElementByLocator(
-      this.elements.signInDialogLoc
+    await this.waitForElementIsVisible(this.elements.signInDialogLoc);
+    await this.waitForElementIsEnabled(
+      await this.findElementByLocator(this.elements.signInDialogLoc)
     );
-    await this.waitForElementIsVisible(signInDialogEl);
     return this.findElementByLocator(this.elements.signInDialogLoc);
   }
 }

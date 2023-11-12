@@ -85,6 +85,7 @@ class BagsSelectionPage extends BasePage {
    */
   async selectContinue() {
     await this.scrollToBottomOfPage();
+    // Wait for price to update
     await this.driver.sleep(3000);
     await this.waitForElementIsVisible(this.elements.continueButtonLoc);
     await this.clickByLocator(this.elements.continueButtonLoc);
