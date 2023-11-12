@@ -113,3 +113,8 @@ dist
 # Serverless Webpack directories
 .webpack/
 
+### Allure Reports and Results ###
+allure-*/**
+
+### Cucumber Report ###
+cucumber-report.html
