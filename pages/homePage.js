@@ -2,6 +2,7 @@ const { By } = require("selenium-webdriver");
 const BasePage = require("./basePage");
 const getAirportDataByCode = require("../utils/getAirportData");
 const formatDate = require("../utils/formatDate");
+const validateAndCalculateMonthsInFuture = require("../utils/validateAndCalculateMonthsInTheFuture");
 
 class HomePage extends BasePage {
   constructor() {
@@ -16,6 +17,7 @@ class HomePage extends BasePage {
       toInputLoc: By.xpath("//fsw-input-button[@uniqueid='destination']"),
       countryNamesLoc: By.css("div.countries__country"),
       airportNameLoc: By.css("span[data-id='{airportCode}']"),
+      datesNextMonthLoc: By.css("div[data-ref$='calendar-btn-next-month']"),
       datesFromInputLoc: By.css("fsw-input-button[uniqueid$='dates-from']"),
       dateInputLoc: By.css("div[data-id='{date}'"),
       passengersInputLoc: By.css("ry-input-button[uniqueid='passengers']"),
@@ -136,13 +138,12 @@ class HomePage extends BasePage {
 
   /**
    * Clicks on target date if visible in calendar initial state
-   * TODO: Improve logic to click in dates that are further in the future
-   * TODO: Use Date object to find how many months in the future
-   * TODO: Use number of months to change calendar pagination
    * @param {Date} date
    * @returns {undefined}
    */
   async selectDate(date) {
+    this.#selectMonth(date);
+
     // Formats Date object to return string in format YYYY-MM-DD
     const formattedDate = formatDate(date);
     // Update locator to use formatted date to dynamically find dates
@@ -158,6 +159,27 @@ class HomePage extends BasePage {
     await this.waitForElementIsEnabled(dateElement);
     this.driver.actions().move(dateElement);
     await this.clickByLocator(this.elements.dateInputLoc);
+  }
+
+  async #selectMonth(date) {
+    // Validate date and get month difference
+    const dataValidation = validateAndCalculateMonthsInFuture(date);
+
+    if (!dataValidation.valid) {
+      throw new Error(`Invalid date: ${date}`);
+    }
+
+    const nextMonthEl = await this.findElementByLocator(
+      this.elements.datesNextMonthLoc
+    );
+    await this.waitForElementIsEnabled(nextMonthEl);
+    this.driver.actions().move(nextMonthEl);
+
+    if (dataValidation.monthsInFuture === 0) return;
+
+    for (let month = 0; month < dataValidation.monthsInFuture; month++) {
+      await this.clickByLocator(nextMonthEl);
+    }
   }
 
   /**
