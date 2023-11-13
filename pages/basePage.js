@@ -200,6 +200,30 @@ class BasePage {
   }
 
   /**
+   * Interacts with element to check if stale.
+   * It sleeps for the first three iterations.
+   * Useful to check how lond does in take to element be stable.
+   * @param {WebElement} element
+   * @param {number} checks Defaults to 3
+   * @returns {undefined}
+   */
+  async waitForElementIsNotStale(element, checks = 3) {
+    for (let currentCheck = 0; currentCheck < checks + 1; currentCheck++) {
+      try {
+        element.getText();
+      } catch (StaleElementReferenceError) {
+        console.info(`Element still stale in check ${currentCheck + 1}`);
+
+        if (currentCheck === checks) {
+          throw new Error("Element kept stale");
+        }
+
+        this.driver.sleep(250);
+      }
+    }
+  }
+
+  /**
    * Close web browser for driver instance
    * @returns {undefined}
    */
