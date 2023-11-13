@@ -26,14 +26,17 @@ class ChooseFare extends BasePage {
    */
   async selectFareByName(fareName) {
     await this.waitForElementIsLocated(this.elements.fareNamesLoc);
-    const fareNames = await this.findElementsByLocator(
+    let fareNames = await this.findElementsByLocator(
       this.elements.fareNamesLoc
     );
+
+    await this.scrollToElement(fareNames[0]);
+    fareNames = await this.findElementsByLocator(this.elements.fareNamesLoc);
 
     const faresColumns = await this.findElementsByLocator(
       this.elements.fareColsLoc
     );
-    this.waitForElementIsNotStale(faresColumns[0]);
+    await this.waitForElementIsNotStale(faresColumns[0]);
 
     for (let i = 0; i < fareNames.length; i++) {
       if ((await fareNames[i].getText()) === fareName) {
