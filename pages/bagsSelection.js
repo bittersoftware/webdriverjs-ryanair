@@ -80,7 +80,8 @@ class BagsSelectionPage extends BasePage {
    * Scroll to the bottom of the page before clicking
    * Although locator is found, sometimes clicking the button has no effect
    * Hard code wait so button can be clicked effectively
-   * TODO: Diag button status to remove hard code sleep
+   * TODO: Implement nav bar PO to detect when the check icon appears so Continue btn is enabled
+   * TODO: This avoid the sleep in this step
    * @returns {undefined}
    */
   async selectContinue() {
