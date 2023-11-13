@@ -37,7 +37,7 @@ When(
     // Choose "BASIC" fare
     await ChooseFare.selectFareByName("BASIC");
 
-    // Switch to Regular
+    // Continue with basic
     await ChooseFare.selectContinueWithBasic();
 
     // Fill passenger detail with random data
