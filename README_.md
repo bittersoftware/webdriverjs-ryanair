@@ -45,14 +45,8 @@ npm test
 
 ### Alure Reports
 
-Setup allure
-
-```
-npx cucumber-js --format ./config/reporter.js
-```
-
 After test run is finished, test result will be stored in `allure-results` directory.
-Generate allure reports using `allure-cli`. This will create `allure-report` directory with the html report.
+Generate allure reports using `allure-cli`. This will create/update `allure-report` directory with the html report.
 
 ```
 npx allure generate allure-results --clean -o allure-report
