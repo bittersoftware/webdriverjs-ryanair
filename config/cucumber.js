@@ -5,6 +5,7 @@ module.exports = {
     formatOptions: { colorsEnabled: true },
     paths: ["./features/*.feature"],
     import: ["./utils/*.js", "./pages/*.js"],
+    backtrace: true,
     require: [
       "./features/stepDefinitions/*",
       "./features/support/*",
