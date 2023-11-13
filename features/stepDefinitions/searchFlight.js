@@ -10,6 +10,7 @@ const FastTrackPage = require("../../pages/fastTrackDialog");
 const BagsSelectionPage = require("../../pages/bagsSelection");
 const ExtrasPage = require("../../pages/extrasOptions");
 const SignInDialogPage = require("../../pages/signInDialog");
+const NavBarPage = require("../../pages/navBar");
 
 setDefaultTimeout(60 * 1000);
 
@@ -37,7 +38,7 @@ When(
     await ChooseFare.selectFareByName("BASIC");
 
     // Switch to Regular
-    await ChooseFare.selectSwitchToRegular();
+    await ChooseFare.selectContinueWithBasic();
 
     // Fill passenger detail with random data
     await PassengerDetails.selectLoginLater();
@@ -54,7 +55,9 @@ When(
 
     // Select bags. Adds 20Kg bags for all pax
     await BagsSelectionPage.selectSmallBag();
+    const currentTotalPrice = await NavBarPage.getTotalPriceText();
     await BagsSelectionPage.selectCheckInBagsForAll(weight);
+    await NavBarPage.waitForPriceToUpdate(currentTotalPrice);
     await BagsSelectionPage.selectContinue();
 
     // Skip Extras
