@@ -9,8 +9,8 @@ class SelectSeatsPage extends BasePage {
     this.familyRows = undefined;
 
     this.elements = {
-      seatPopUpButtonLoc: By.css("button.seats-modal__cta"),
-      seatPopUpTextLoc: By.css("div.seats-modal__body"),
+      seatDialogButtonLoc: By.css("button.seats-modal__cta"),
+      seatDialogTextLoc: By.css("div.seats-modal__body"),
       seatLoc: By.css("*[id='seat-XXL']"),
       rowLengthLoc: By.xpath("//*[contains(@id,'seat-ROW')]"),
       continueButtonLoc: By.css(
@@ -26,8 +26,16 @@ class SelectSeatsPage extends BasePage {
    * @returns {undefined}
    */
   async #updateFamilyRows() {
-    await this.waitForElementIsVisible(this.elements.seatPopUpTextLoc);
-    const fullText = await this.getText(this.elements.seatPopUpButtonLoc);
+    await this.waitForElementIsVisible(this.elements.seatDialogTextLoc);
+    let fullText;
+
+    for (let i = 0; i < 4; i++) {
+      fullText = await this.getText(this.elements.seatDialogTextLoc);
+      if (fullText) {
+        break;
+      }
+      await this.sleep(500);
+    }
     this.familyRows = await getFamilyRows(fullText);
   }
 
@@ -39,7 +47,7 @@ class SelectSeatsPage extends BasePage {
     // wait for family dialog to appear after animation
     await this.driver.sleep(2000);
     await this.#updateFamilyRows();
-    await this.clickByLocator(this.elements.seatPopUpButtonLoc);
+    await this.clickByLocator(this.elements.seatDialogButtonLoc);
   }
 
   /**

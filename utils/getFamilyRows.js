@@ -1,5 +1,9 @@
 /**
  * Returns list of numbers for initial and final rows for family
+ * Expected text format:
+ * "When selecting your seats please seat children next to adults.
+ * Choose seats marked 'included' for adults and children under 12.
+ * Family seats are available in rows 18-33"
  * @param {string} fullText
  * @returns {number[]} fist and last family rows
  */
