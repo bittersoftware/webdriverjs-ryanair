@@ -84,6 +84,11 @@ See example [here](https://reports.cucumber.io/reports/3b1fd8aa-6fb2-451c-9be5-6
   - `basePage`: Base methods to interact with driver
 - `utils`: helper functions to manipulate data
 
+## Test Run Video Recording
+
+- [Chrome](https://youtu.be/oefIcy3SJd0)
+- [Firefox](https://youtu.be/7UbNq7Lhvn4)
+
 ## Disclaimer
 
 - This code was developed and tested in macOS Ventura 13.6 (Darwin) in which is more stable. I also ran in Ubuntu 22.04 LTS after wrapping up everything, but it was not as stable as in macOS. Unfortunately I did not have time to fix and make it all compatible.
