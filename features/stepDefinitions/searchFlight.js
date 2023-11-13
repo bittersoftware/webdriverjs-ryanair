@@ -17,6 +17,8 @@ setDefaultTimeout(60 * 1000);
 Given(
   "I search for a flight from {string} to {string} on {date} for {int} adults and {int} child",
   async (departure, destination, date, adult, child) => {
+    this.pax = adult + child;
+
     await HomePage.selectOneWayTrip();
     await HomePage.selectDeparture(departure);
     await HomePage.selectDestination(destination);
@@ -47,7 +49,7 @@ When(
 
     // Look for 3 consecutive empty seats
     await SelectSeatsPage.dismissFamilyWarningDialog();
-    await SelectSeatsPage.findFirstAvailableSeats(3);
+    await SelectSeatsPage.findFirstAvailableSeats(this.pax);
     await SelectSeatsPage.clickContinueButton();
 
     // Dismiss Fast Track Dialog
