@@ -55,10 +55,8 @@ class ChooseFare extends BasePage {
    * @returns {undefined}
    */
   async selectContinueWithBasic() {
-    const buttonContinueWithBasicEl = await this.findElementByLocator(
-      this.elements.continueButtonLoc
-    );
-    await buttonContinueWithBasicEl.click();
+    await this.waitForElementIsVisible(this.elements.continueButtonLoc);
+    await this.clickByLocator(this.elements.continueButtonLoc);
   }
 
   /**
