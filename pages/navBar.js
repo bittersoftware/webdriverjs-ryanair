@@ -23,9 +23,9 @@ class NavBarPage extends BasePage {
   }
 
   /**
-   * Description
-   * @param {any} initialPrice
-   * @returns {any}
+   * Wait for price to update so Continue button is enabled
+   * @param {string} initialPrice
+   * @returns {undefined}
    */
   async waitForPriceToUpdate(initialPrice) {
     let currentPrice;
