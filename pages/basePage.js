@@ -218,7 +218,7 @@ class BasePage {
           throw new Error("Element kept stale");
         }
 
-        this.driver.sleep(250);
+        await this.driver.sleep(250);
       }
     }
   }
