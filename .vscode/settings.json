@@ -7,6 +7,6 @@
     "source.fixAll.eslint": true
   },
   "eslint.validate": ["javascript"],
-  "cucumberautocomplete.steps": ["features/step_definitions/*.js"],
+  "cucumberautocomplete.steps": ["features/stepDefinitions/*.js"],
   "cucumberautocomplete.strictGherkinCompletion": false
 }
