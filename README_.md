@@ -6,7 +6,7 @@ Hey there, I am Thiago Bittencourt and here you will find some information about
 
 This project implements an automation of a use case for searching a flight as anonymous user inside Ryanair webpage.
 
-For that we use Selenium with [WebDriverJS](https://www.selenium.dev/selenium/docs/api/javascript/index.html) for web automation, [CucumberJS](https://cucumber.io/docs/installation/javascript/) for BDD and [AllureJS](https://github.com/allure-framework/allure-js) for foreporting.
+For that we use Selenium with [WebDriverJS](https://www.selenium.dev/selenium/docs/api/javascript/index.html) for web automation, [CucumberJS](https://cucumber.io/docs/installation/javascript/) for BDD and [AllureJS](https://github.com/allure-framework/allure-js) for reporting.
 
 ## Setup
 
@@ -58,7 +58,7 @@ Generate allure reports using `allure-cli`. This will create `allure-report` dir
 npx allure generate allure-results --clean -o allure-report
 ```
 
-Access `allure-report` directory and serve the report with `http-serve` and open the local server url.
+Access `allure-report` directory, serve the report with `http-serve` and open the local server url.
 
 ```
 cd allure-report
@@ -73,8 +73,8 @@ CucumberJS also provides reports.
 2. Access [Cucumber Reports](https://reports.cucumber.io/)
 3. Login with GitHub
 4. Create a collection
-5. Get the `CUCUMBER_PUBLISH_TOKEN` provied in the webpage
-6. Create a `CUCUMBER_PUBLISH_TOKEN` virtual enviroment with given token as value.
+5. Get the `CUCUMBER_PUBLISH_TOKEN` provided in the webpage
+6. Create a `CUCUMBER_PUBLISH_TOKEN` virtual environment with given token as value.
 7. All tests run will be automatically published
 
 See example [here](https://reports.cucumber.io/reports/3b1fd8aa-6fb2-451c-9be5-68e901dfea2e)
@@ -92,6 +92,5 @@ See example [here](https://reports.cucumber.io/reports/3b1fd8aa-6fb2-451c-9be5-6
 
 ## Disclaimer
 
-- This code was developed and tested in macOS Ventura 13.6 (Darwin) in which is more stable. I also ran in Ubuntu 22.04 LTS after warpping up everything, but it was not as stable as in macOS. Unfortunately I did not have time to fix and make it all compatible.
+- This code was developed and tested in macOS Ventura 13.6 (Darwin) in which is more stable. I also ran in Ubuntu 22.04 LTS after wrapping up everything, but it was not as stable as in macOS. Unfortunately I did not have time to fix and make it all compatible.
 - I have marked the places I would like to improve the solution with `TODO:` comments.
-  export CUCUMBER_PUBLISH_ENABLED=true
