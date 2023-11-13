@@ -4,7 +4,7 @@
   "description": "demo",
   "main": "index.js",
   "scripts": {
-    "test": "npx cucumber-js --format ./config/reporter.js"
+    "test": "npx cucumber-js --config ./config/cucumber.js"
   },
   "author": "",
   "license": "ISC",
